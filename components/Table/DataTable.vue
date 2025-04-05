@@ -194,19 +194,3 @@ const toggleExpand = (item: any, multiple: boolean = props.multiExpand) => {
    }
 };
 </script>
-
-<style>
-.table-enter-active,
-.table-leave-active {
-   transition: all 195ms cubic-bezier(0.4, 0, 0.6, 1);
-}
-
-.table-enter-from,
-.table-leave-to {
-   opacity: 0;
-}
-
-.table-enter-to {
-   opacity: 1;
-}
-</style>
