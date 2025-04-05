@@ -1,0 +1,54 @@
+/*
+https://tailwindcss.com/docs/upgrade-guide#using-a-javascript-config-file
+https://tailwindcss.com/docs/upgrade-guide#disabling-core-plugins
+https://tailwindcss.com/docs/preflight#overview
+theme, preflight, utilities
+@import "tailwindcss";
+
+plugin
+https://tailwindcss.com/docs/adding-custom-styles#adding-custom-utilities
+*/
+
+@layer vuetify, tailwind, overrides;
+@import "tailwindcss/theme.css" layer(tailwind.theme);
+@import "tailwindcss/utilities.css" layer(tailwind.utilities);
+@config "./tailwind.js";
+
+@theme {
+   --animation-duration-0: 0s;
+   --animation-duration-75: 75ms;
+   --animation-duration-100: 100ms;
+   --animation-duration-150: 150ms;
+   --animation-duration-200: 200ms;
+   --animation-duration-300: 300ms;
+   --animation-duration-500: 500ms;
+   --animation-duration-700: 700ms;
+   --animation-duration-1000: 1000ms;
+
+   --animation-delay-0: 0s;
+   --animation-delay-75: 75ms;
+   --animation-delay-100: 100ms;
+   --animation-delay-150: 150ms;
+   --animation-delay-200: 200ms;
+   --animation-delay-300: 300ms;
+   --animation-delay-500: 500ms;
+   --animation-delay-700: 700ms;
+   --animation-delay-1000: 1000ms;
+}
+
+@utility animation-duration-* {
+   animation-duration: --value([ *]);
+   animation-duration: --value(--animation-duration- *);
+}
+
+@utility animation-delay-* {
+   animation-delay: --value([ *]);
+   animation-delay: --value(--animation-delay- *);
+}
+
+@utility flex-center {
+   @apply items-center justify-center;
+}
+
+@custom-variant light (&:where(.v-theme--light *));
+@custom-variant dark (&:not(.v-theme--light *));

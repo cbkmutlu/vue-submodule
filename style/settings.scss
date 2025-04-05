@@ -1,0 +1,23 @@
+// No custom CSS rules are defined here
+// https://vuetifyjs.com/en/features/sass-variables/#component-specific-variables
+// https://vuetifyjs.com/en/features/sass-variables/#duplicated-css
+@forward "vuetify/settings" with (
+   $layers: true,
+   $utilities: false,
+   $color-pack: false,
+   $table-column-padding: 0 12px,
+   $table-density: ('default': 0, 'comfortable': -2, 'compact': -3),
+
+   $field-font-size: 14px,
+   $field-label-floating-scale: 0.9285714285714286,
+   $label-font-size: 1em,
+
+   $body-font-family: (
+      "Noto Sans",
+      "Roboto",
+      "Segoe UI",
+      "Calibri",
+      "Verdana",
+      "sans-serif"
+   ),
+);

@@ -1,0 +1,264 @@
+@use "./settings";
+@use "vuetify";
+@use "./base/mixins" as *;
+@import url("tailwind.css");
+
+@layer vuetify.utilities {
+   .rounded-0 {
+      border-radius: 0 !important;
+   }
+
+   @for $i from 1 through 24 {
+      .elevation-#{$i} {
+         @include elevation($i, $important: true);
+      }
+   }
+}
+
+@layer vuetify.colors {
+   .bg-transparent {
+      background-color: transparent !important;
+      color: currentColor !important;
+   }
+}
+
+@layer overrides {
+   $scroll: rgba(var(--v-theme-on-surface), 0.3);
+   $background: rgba(var(--v-theme-on-surface), 0.05);
+   * {
+      // firefox
+      @supports not selector(::-webkit-scrollbar) {
+         scrollbar-color: $scroll $background;
+         scrollbar-width: thin;
+      }
+   }
+   :root {
+      @include scrollbar(8px, $background, $scroll);
+   }
+
+   html,
+   body,
+   #app {
+      overflow: hidden;
+      height: 100%;
+   }
+
+   // body {
+   //    font-size: 14px;
+   // }
+
+   $opacitySelected: calc(var(--v-selected-opacity) * var(--v-theme-overlay-multiplier));
+   $opacityHover: calc((var(--v-activated-opacity) + var(--v-hover-opacity)) * var(--v-theme-overlay-multiplier));
+   $opacityActive: calc(var(--v-activated-opacity) * var(--v-theme-overlay-multiplier));
+
+   // vBtn
+   .v-btn {
+      letter-spacing: 0.05em;
+      text-indent: unset;
+      text-transform: unset;
+      transition-property: border, color, box-shadow, transform, opacity, background;
+
+      &:not(.v-date-picker-month__day-btn) {
+         &:where(.v-ripple--false *) {
+            &:active > .v-btn__overlay {
+               opacity: $opacityActive;
+            }
+         }
+      }
+
+      &.v-date-picker-month__day-btn:active {
+         background-color: rgba(var(--v-theme-surface-variant), var(--v-disabled-opacity));
+      }
+   }
+
+   // vList
+   .v-list {
+      .v-list-subheader {
+         color: rgba(var(--v-theme-on-primary), var(--v-medium-emphasis-opacity));
+      }
+
+      .v-list-item--nav .v-list-item-title {
+         line-height: 1.75;
+      }
+
+      &:where(.v-ripple--false *) {
+         .v-list-item--link:not(.v-list-item--active):active > .v-list-item__overlay {
+            opacity: $opacityHover;
+         }
+
+         .v-list-item--link.v-list-item--active:active > .v-list-item__overlay {
+            opacity: $opacityActive;
+         }
+      }
+   }
+
+   // vNavigationDrawer
+   .v-navigation-drawer {
+      &.v-navigation-drawer--rail {
+         .v-navigation-drawer__content {
+            display: flex;
+            flex-direction: column;
+         }
+      }
+
+      &:not(.v-navigation-drawer--rail) {
+         .v-navigation-drawer__content {
+            overflow-y: scroll;
+         }
+      }
+   }
+
+   // vCheckbox, vRadio
+   .v-input {
+      &:where(.v-ripple--false *) {
+         .v-selection-control__input::before {
+            transition: opacity 0.2s ease-in-out;
+         }
+
+         .v-selection-control__input:active::before {
+            opacity: $opacityActive;
+         }
+      }
+   }
+
+   // vDatePicker
+   .v-date-picker {
+      .v-date-picker-month__day {
+         width: 36px;
+         height: 36px;
+      }
+   }
+
+   // vOverlay
+   .v-overlay {
+      &:not(.v-theme--light) {
+         .v-overlay__scrim {
+            opacity: 0.5;
+         }
+      }
+   }
+
+   // vMenu
+   .v-menu {
+      > .v-overlay__content {
+         overflow: visible;
+      }
+   }
+
+   .v-input--density-compact {
+      .v-field--variant-filled {
+         --v-field-padding-bottom: 2px;
+      }
+
+      .v-field--variant-underlined {
+         --v-field-padding-bottom: 2px;
+      }
+   }
+
+   // vCard
+   .v-card {
+      transition-property: box-shadow, opacity;
+   }
+
+   // vTable
+   .v-table {
+      transition-property: box-shadow, opacity, height;
+
+      table {
+         table-layout: fixed;
+      }
+
+      td {
+         transition-property: box-shadow, height;
+      }
+
+      tr.v-data-table__tr--clickable > td::after {
+         transition: all 195ms cubic-bezier(0.4, 0, 0.6, 1);
+      }
+      tr.v-data-table__tr--clickable:active > td::after {
+         background: rgba(var(--v-border-color), var(--v-selected-opacity));
+      }
+
+      .v-table__wrapper {
+         overflow: visible;
+
+         > table > tbody > tr:last-child > td,
+         > table > tbody > tr:last-child > th {
+            border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
+         }
+      }
+
+      .v-data-table-footer {
+         margin-top: -1px;
+
+         .v-data-table-footer__info {
+            min-width: 300px;
+         }
+
+         .v-data-table-footer__items-per-page > .v-select {
+            width: 120px !important;
+         }
+
+         .v-data-table-footer__pagination {
+            .v-pagination__item,
+            .v-pagination__first,
+            .v-pagination__prev,
+            .v-pagination__next,
+            .v-pagination__last {
+               margin: 0 0.3rem 0 0.3rem;
+            }
+         }
+      }
+
+      &.v-table--hover td:has(.v-skeleton-loader)::after {
+         display: none;
+      }
+
+      // table header color
+      &.v-table--accent-header {
+         > .v-table__wrapper thead {
+            tr {
+               background-color: rgba(var(--v-theme-surface-light), var(--v-disabled-opacity));
+            }
+         }
+      }
+
+      // table sticky header
+      &.v-table--sticky-header {
+         > .v-table__wrapper thead {
+            position: sticky;
+            top: -1.5rem;
+            z-index: 2;
+            background-color: rgb(var(--v-theme-surface));
+         }
+      }
+
+      // table sticky footer
+      &.v-table--sticky-footer {
+         > .v-divider {
+            display: none;
+         }
+         > .v-data-table-footer {
+            position: sticky;
+            bottom: -1.5rem !important;
+            z-index: 2;
+            background-color: rgb(var(--v-theme-surface));
+            border-top: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
+         }
+      }
+   }
+
+   .table-enter-active,
+   .table-leave-active {
+      transition: all 195ms cubic-bezier(0.4, 0, 0.6, 1);
+   }
+
+   .table-enter-from,
+   .table-leave-to {
+      opacity: 0;
+   }
+
+   .table-enter-to {
+      opacity: 1;
+   }
+}
