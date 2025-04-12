@@ -3,7 +3,7 @@ export const queryOptions: VueQueryPluginOptions = {
    queryClientConfig: {
       defaultOptions: {
          queries: {
-            refetchOnWindowFocus: false,
+            refetchOnWindowFocus: appConfig.tanstack.refetch,
             gcTime: 1000 * 60 * appConfig.tanstack.cache, //minutes
             staleTime: 1000 * 60 * appConfig.tanstack.stale, //minutes
             retry: appConfig.retry.attempt,

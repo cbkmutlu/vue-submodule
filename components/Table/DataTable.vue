@@ -9,14 +9,15 @@
       v-bind:disable-sort="disableSort"
       v-bind:items="filterItems"
       v-bind:items-per-page-options="[10, 25, 50, 100, -1]"
-      v-bind:loading="!!props.loading ? 'primary' : false"
+      v-bind:loading="!!loadingItems ? 'primary' : false"
       density="compact"
       hover
       items-per-page="10"
       return-object
+      @update:options="handleOptionsUpdate"
       @update:page="expandedItems = []">
       <template
-         v-if="props.loading"
+         v-if="loadingItems"
          v-slot:loading>
          <v-skeleton-loader type="table-row-divider, list-item-three-line, list-item-two-line, list-item-two-line" />
       </template>
@@ -58,12 +59,12 @@
 
       <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort, someSelected, allSelected, selectAll }">
          <TableHeader
-            v-if="!props.loading"
+            v-if="!loadingItems"
             v-bind="{ columns, isSorted, getSortIcon, toggleSort, someSelected, allSelected, selectAll, disableSort }" />
       </template>
 
       <template
-         v-if="!props.loading"
+         v-if="!loadingItems"
          v-slot:body="{ internalItems, isSelected, toggleSelect, columns }">
          <v-fade-transition
             name="table"
@@ -165,7 +166,7 @@ const props = withDefaults(defineProps<TDataTable & TProps>(), {
    accentHeader: true,
    disableSort: false,
    titleIcon: "$ratingEmpty",
-   itemExpand: ""
+   itemExpand: "",
 });
 
 const filterSearch = ref("");
@@ -192,5 +193,18 @@ const toggleExpand = (item: any, multiple: boolean = props.multiExpand) => {
    } else {
       expandedItems.value = isExpanded(item) ? [] : [item];
    }
+};
+
+const optionsLoading = ref(false);
+const loadingItems = computed(() => props.loading || optionsLoading.value);
+const currentOptions: any = ref({});
+const handleOptionsUpdate = async (options: any) => {
+   if (options.itemsPerPage !== currentOptions.value.itemsPerPage) {
+      optionsLoading.value = true;
+      await nextTick();
+   }
+
+   setTimeout(() => optionsLoading.value = false, 25);
+   currentOptions.value = options;
 };
 </script>
